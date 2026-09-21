@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dukcapil DKI Jakarta — Redesign IMK",
-  description: "Prototype redesign portal layanan kependudukan DKI Jakarta berbasis prinsip IMK dan information architecture.",
+  title: "Dinas Kependudukan dan Pencatatan Sipil Provinsi DKI Jakarta",
+  description: "Portal layanan administrasi kependudukan dan pencatatan sipil bagi warga DKI Jakarta.",
 };
 
 export default function RootLayout({
