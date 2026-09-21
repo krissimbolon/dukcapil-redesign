@@ -57,7 +57,7 @@ const news = [["Pengumuman","Implementasi Sistem Informasi Administrasi Kependud
 const faq = [["Apakah layanan administrasi kependudukan dipungut biaya?","Informasi biaya mengikuti standar pelayanan resmi pada masing-masing layanan. Periksa bagian biaya sebelum mengajukan."],["Di mana saya harus mengurus dokumen?","Cari layanan yang dibutuhkan terlebih dahulu. Rincian layanan menunjukkan tingkat unit dan kanal pengurusannya."],["Bagaimana jika persyaratan belum lengkap?","Gunakan daftar periksa pada rincian layanan dan lengkapi dokumen sebelum mengajukan."],["Bagaimana menyampaikan keluhan?","Gunakan kanal bantuan dan pengaduan resmi pada bagian Bantuan Warga."]];
 
 const OFFICIAL="https://kependudukancapil.jakarta.go.id";
-const Emblem=()=> <Image className="emblem" src="/logo-dukcapil.png" width={103} height={55} alt="Logo Dinas Kependudukan dan Pencatatan Sipil" priority/>;
+const Emblem=()=> <Image className="emblem" src="/logo-dukcapil.svg" width={103} height={55} alt="Logo Dinas Kependudukan dan Pencatatan Sipil" priority/>;
 const External=({href,children,className=""})=><a className={className} href={href} target="_blank" rel="noreferrer">{children}</a>;
 function Title({eyebrow,title,text,action}){return <div className="section-head"><div><p className="eyebrow">{eyebrow}</p><h2 className="section-title">{title}</h2>{text&&<p className="lead">{text}</p>}</div>{action}</div>}
 
