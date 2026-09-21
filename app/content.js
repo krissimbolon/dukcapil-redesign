@@ -56,10 +56,14 @@ export const informationItems = [
     links:[]
   },
   {
-    id:"layanan-online", tag:"Layanan", title:"Layanan online Dukcapil", date:"Kanal digital",
-    summary:"Akses kanal transaksi resmi tanpa harus memulai dari website lama.",
-    body:["ALPUKAT Betawi merupakan kanal pelayanan dokumen kependudukan secara daring. Untuk jenis layanan yang tersedia pada UPAK, gunakan portal UPAK resmi.","Portal redesign ini berfungsi sebagai pusat informasi dan navigasi layanan; pengajuan yang membutuhkan autentikasi tetap dilakukan pada sistem transaksi resmi agar data pribadi tidak diproses oleh prototipe."],
-    links:[["Buka ALPUKAT Betawi","https://alpukat-dukcapil.jakarta.go.id/"],["Buka UPAK Dukcapil","https://upak-dukcapil.jakarta.go.id/"]]
+    id:"layanan-online", tag:"Layanan", title:"Ekosistem layanan digital Dukcapil", date:"Kanal digital",
+    summary:"Satu direktori untuk kanal transaksi, konsultasi, data, dan layanan khusus Dukcapil.",
+    body:["Website sumber menampilkan beberapa kanal digital yang sebelumnya tersebar di berbagai bagian. Redesign menyatukannya di satu direktori agar warga tahu fungsi masing-masing kanal sebelum memasukkan data pribadi.","Portal redesign berfungsi sebagai pusat informasi dan navigasi. Proses yang membutuhkan autentikasi, NIK, OTP, atau unggahan dokumen tetap dilakukan pada sistem transaksi resmi."],
+    groups:[
+      {title:"Transaksi dan konsultasi",items:["ALPUKAT Betawi — permohonan dokumen kependudukan daring","UPAK Dukcapil — layanan khusus pendaftaran penduduk, pencatatan sipil, dan dokumen kependudukan","SILAPORLAGI — Sistem Pelaporan Orang Asing dan Pelaporan Luar Negeri","WA DJawara — konsultasi layanan melalui WhatsApp","CRM Jakarta — kanal pengaduan warga"]},
+      {title:"Data dan analitik",items:["DARIKU UNTUKMU — Dashboard Statistik Kependudukan Untuk Semua","PRODUK RW — profil kependudukan tingkat RW/RT","PRIORITAS — dashboard profil penduduk penyandang disabilitas","Solusi Jawara — Sistem Pengelolaan dan Analisa Penduduk Berbasis AI"]}
+    ],
+    links:[["Buka ALPUKAT Betawi","https://alpukat-dukcapil.jakarta.go.id/"],["Buka UPAK Dukcapil","https://upak-dukcapil.jakarta.go.id/"],["Buka SILAPORLAGI","https://silaporlagi-dukcapil.jakarta.go.id/"],["WhatsApp WA DJawara","https://wa.me/6281212012031"],["Pengaduan CRM Jakarta","https://pengaduanwarga.jakarta.go.id/"]]
   },
   {
     id:"upak", tag:"Layanan", title:"Unit Pelayanan Administrasi Kependudukan (UPAK)", date:"Layanan khusus",
@@ -71,21 +75,22 @@ export const informationItems = [
     links:[["Buka portal UPAK","https://upak-dukcapil.jakarta.go.id/"]]
   },
   {
-    id:"forms", tag:"Formulir", title:"Pusat formulir administrasi kependudukan", date:"Dokumen warga",
-    summary:"Panduan memilih formulir untuk pendaftaran penduduk dan pencatatan sipil.",
-    body:["Formulir dikelompokkan menurut peristiwa kependudukan dan peristiwa penting. Pilih kelompok yang sesuai sebelum datang atau mengajukan secara daring.","Petugas akan memastikan formulir yang tepat berdasarkan peristiwa dan kewenangan unit pelayanan. Siapkan identitas serta dokumen pendukung sebelum mengisi."],
+    id:"forms", tag:"Formulir", title:"Pusat formulir administrasi kependudukan", date:"Permendagri No. 6 Tahun 2026",
+    summary:"Formulir pengajuan dan hasil pelayanan adminduk terbaru beserta petunjuk pengisiannya.",
+    body:["Sumber resmi Dukcapil Jakarta memperbarui pusat formulir berdasarkan Peraturan Menteri Dalam Negeri Nomor 6 Tahun 2026. Dokumen sumber memuat formulir pendaftaran penduduk, pencatatan sipil, pemanfaatan data, catatan pinggir, petunjuk pengisian, buku cetakan, dan spesifikasi stempel jabatan.","Gunakan formulir yang sesuai dengan peristiwa kependudukan atau peristiwa penting. Pada halaman detail tiap layanan, persyaratan sudah dipetakan agar warga tidak perlu menebak formulir yang relevan."],
     groups:[
-      {title:"Kelompok formulir",items:["Biodata penduduk dan Kartu Keluarga","Perpindahan penduduk","Kelahiran dan kematian","Perkawinan dan perceraian","Perubahan elemen data dan pembetulan dokumen","Warga negara asing dan peristiwa lintas negara"]}
+      {title:"Kelompok formulir",items:["Biodata penduduk dan Kartu Keluarga","Perpindahan penduduk","Kelahiran dan kematian","Perkawinan dan perceraian","Perubahan elemen data dan pembetulan dokumen","Warga negara asing dan peristiwa lintas negara"]},
+      {title:"Contoh kode",items:["F-1.01 — Formulir Biodata Keluarga","Formulir hasil pelayanan pendaftaran penduduk","Formulir pencatatan sipil dan catatan pinggir","Petunjuk pengisian dan dokumen pendukung pelayanan"]}
     ],
-    links:[]
+    links:[["Unduh paket formulir resmi 2026","https://kependudukancapil.jakarta.go.id/wp-content/uploads/2026/05/Formulir-Permendagri-No-6-Tahun-2026.pdf"]]
   },
   {
-    id:"publications", tag:"Publikasi", title:"Publikasi kependudukan DKI Jakarta", date:"Data dan publikasi",
-    summary:"Katalog publikasi yang sebelumnya tersebar di website lama kini disatukan dalam satu pusat informasi.",
-    body:["Publikasi Dukcapil menyediakan gambaran agregat perkembangan penduduk dan hasil pelayanan. Data individu seperti NIK tidak ditampilkan pada portal publik."],
+    id:"publications", tag:"Publikasi", title:"Publikasi kependudukan DKI Jakarta", date:"Arsip data dan publikasi",
+    summary:"Katalog seri publikasi resmi dengan cakupan tahun yang tersedia pada situs sumber.",
+    body:["Publikasi Dukcapil menyediakan gambaran agregat perkembangan penduduk, peristiwa vital, hasil pelayanan, dan kepuasan masyarakat. Redesign mempertahankan struktur seri agar arsip tidak tercecer di banyak halaman.","Data individu seperti NIK tidak ditampilkan pada portal publik."],
     groups:[
-      {title:"Seri publikasi",items:["Buku Statistik Vital","Buku Hasil Pelayanan Pendaftaran Penduduk dan Pencatatan Sipil (LAMPID)","Buku Profil Perkembangan Kependudukan","Buku Informasi Hasil Pelayanan (Buku Saku)","Buku Tematik Kelahiran dan Kematian","Indeks Kepuasan Masyarakat (IKM)"]},
-      {title:"Materi informasi",items:["Infografis","Video informasi","Hasil penelitian","Agenda kerja pimpinan"]}
+      {title:"Seri dan cakupan yang tersedia",items:["Buku Statistik Vital — 2019 s.d. 2025","Buku Profil Perkembangan Kependudukan — 2013 s.d. 2024","Buku Informasi Hasil Pelayanan (Buku Saku) — 2019 s.d. 2025","Buku Tematik Kelahiran dan Kematian — 2019 dan 2020","Buku Hasil Pelayanan Pendaftaran Penduduk dan Pencatatan Sipil (LAMPID)","Indeks Kepuasan Masyarakat (IKM)"]},
+      {title:"Materi informasi lain",items:["Infografis","Video informasi","Hasil penelitian","Agenda kerja pimpinan"]}
     ],
     links:[]
   },
@@ -96,20 +101,22 @@ export const informationItems = [
     links:[]
   },
   {
-    id:"standards", tag:"Standar", title:"Standar pelayanan administrasi kependudukan", date:"Jaminan pelayanan",
-    summary:"Komponen standar pelayanan untuk memastikan persyaratan, alur, biaya, dan produk layanan transparan.",
-    body:["Setiap standar pelayanan memuat dasar hukum, persyaratan, prosedur, jangka waktu, biaya, produk layanan, sarana, kompetensi pelaksana, pengawasan, dan penanganan pengaduan.","Pelayanan Dukcapil pada tingkat kecamatan dinyatakan gratis. Rincian persyaratan dan alur mengikuti jenis layanan yang dipilih."],
+    id:"standards", tag:"Standar", title:"Standar pelayanan administrasi kependudukan", date:"Dokumen standar pelayanan",
+    summary:"Landasan persyaratan, alur, jangka waktu, biaya, produk layanan, dan penanganan pengaduan.",
+    body:["Standar pelayanan tingkat Dinas ditetapkan melalui Keputusan Kepala Dinas Dukcapil Provinsi DKI Jakarta Nomor 100 Tahun 2022. Situs resmi juga memuat keputusan standar pelayanan untuk UPAK dan masing-masing Suku Dinas kota administrasi.","Rincian 45 layanan pada redesign telah diturunkan menjadi panduan persyaratan per layanan agar warga tidak perlu membaca satu dokumen panjang untuk kebutuhan sehari-hari."],
     groups:[
-      {title:"Tingkat pelayanan",items:["Service point Dukcapil Kelurahan","Sektor Dukcapil Kecamatan","Suku Dinas Dukcapil Kota/Kabupaten Administrasi","Unit Pelayanan Administrasi Kependudukan (UPAK)"]}
+      {title:"Dokumen tingkat organisasi",items:["Dinas Dukcapil DKI Jakarta — SK Kepala Dinas No. 100 Tahun 2022","UPAK — SK Kepala UPAK No. 5 Tahun 2022","Sudin Jakarta Pusat — SK No. 42 Tahun 2022","Sudin Jakarta Utara — SK No. 6 Tahun 2022","Sudin Jakarta Barat — SK No. 43 Tahun 2022","Sudin Jakarta Selatan — SK No. 2410 Tahun 2023","Sudin Jakarta Timur — SK No. 11 Tahun 2022"]},
+      {title:"Tingkat pelayanan warga",items:["Service point Dukcapil Kelurahan","Sektor Dukcapil Kecamatan","Suku Dinas Dukcapil Kota/Kabupaten Administrasi","Unit Pelayanan Administrasi Kependudukan (UPAK)"]}
     ],
-    links:[]
+    links:[["Dokumen standar pelayanan Dinas","https://drive.google.com/file/d/1cdX7iNCDmozdLpEwj6FCqgnt2WIoHoF8/view?usp=sharing"]]
   },
   {
-    id:"sop", tag:"Standar", title:"Standar Operasional Prosedur (SOP)", date:"Tata kelola pelayanan",
-    summary:"Pusat struktur SOP layanan agar warga tidak perlu mencari dokumen di berbagai menu.",
-    body:["SOP mengatur tahapan kerja internal pelayanan dan menjadi pasangan dari standar pelayanan yang dibaca warga. Gunakan halaman layanan untuk melihat ringkasan alur yang relevan."],
+    id:"sop", tag:"Standar", title:"Standar Operasional Prosedur (SOP)", date:"SK Kepala Dinas No. 98 Tahun 2022",
+    summary:"Pusat struktur SOP pelayanan untuk Dinas, UPAK, serta Suku Dinas kota/kabupaten administrasi.",
+    body:["SOP lingkup Dinas Dukcapil DKI Jakarta ditetapkan melalui Keputusan Kepala Dinas Nomor 98 Tahun 2022. Situs sumber juga menyediakan dokumen SOP terpisah untuk UPAK, Kepulauan Seribu, Jakarta Pusat, Utara, Barat, Selatan, dan Timur.","Pada redesign, warga tetap memperoleh alur ringkas langsung di detail layanan; dokumen SOP berfungsi sebagai rujukan tata kelola yang lebih lengkap."],
     groups:[
-      {title:"Cakupan SOP",items:["Pendaftaran penduduk","Pencatatan sipil","Pengelolaan dokumen administrasi kependudukan","Pelayanan informasi publik","Pengaduan dan tindak lanjut","Pengelolaan data dan informasi"]}
+      {title:"Unit dengan dokumen SOP",items:["Dinas Dukcapil Provinsi DKI Jakarta","Unit Pelayanan Administrasi Kependudukan (UPAK)","Sudin Dukcapil Kepulauan Seribu","Sudin Dukcapil Jakarta Pusat","Sudin Dukcapil Jakarta Utara","Sudin Dukcapil Jakarta Barat","Sudin Dukcapil Jakarta Selatan","Sudin Dukcapil Jakarta Timur"]},
+      {title:"Cakupan proses",items:["Pendaftaran penduduk","Pencatatan sipil","Pengelolaan dokumen administrasi kependudukan","Pelayanan informasi publik","Pengaduan dan tindak lanjut","Pengelolaan data dan informasi"]}
     ],
     links:[]
   },
@@ -185,6 +192,15 @@ export const informationItems = [
     groups:[
       {title:"Pendidikan",items:["Diploma III Sekolah Tinggi Pemerintahan Dalam Negeri (1993)","Sarjana Ilmu Pemerintahan, Institut Ilmu Pemerintahan Jakarta (1998)","Magister Ilmu Pemerintahan, Universitas Satyagama (2007)"]},
       {title:"Pengalaman strategis",items:["Camat Kepulauan Seribu Selatan","Camat Pasar Rebo","Kepala Biro Organisasi dan Tatalaksana Setda Provinsi DKI Jakarta","Kepala BPBD Provinsi DKI Jakarta","Wakil Kepala DPMPTSP Provinsi DKI Jakarta"]}
+    ],
+    links:[]
+  },
+  {
+    id:"profil-pejabat", tag:"Profil", title:"Direktori pejabat Dukcapil DKI Jakarta", date:"Profil organisasi",
+    summary:"Struktur jabatan tersedia di redesign tanpa mengarang identitas yang tidak dipublikasikan secara terstruktur oleh halaman sumber.",
+    body:["Website sumber menyediakan menu “Profil Pejabat”, namun pada versi yang dapat diakses saat migrasi tidak menampilkan daftar nama atau biodata terstruktur. Karena itu redesign tidak menyalin nama yang tidak dapat diverifikasi.","Direktori ini menggunakan struktur organisasi sebagai rujukan jabatan. Identitas pejabat selain Kepala Dinas dapat ditambahkan ketika sumber resmi terstruktur tersedia."],
+    groups:[
+      {title:"Jabatan utama",items:["Kepala Dinas","Sekretariat","Bidang Pendaftaran Penduduk","Bidang Pencatatan Sipil","Bidang Data dan Informasi","Bidang Pembinaan, Pengawasan dan Pengendalian Administrasi Kependudukan","Unit Pelaksana Teknis","Kepala Suku Dinas Kota/Kabupaten Administrasi"]}
     ],
     links:[]
   },
