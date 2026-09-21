@@ -67,12 +67,12 @@ const quick = [
 ];
 
 export default function DukcapilRedesign() {
-  const [view,setView] = useState<"home"|"services"|"detail"|"ppid"|"status"|"info">("home");
+  const [view,setView] = useState("home");
   const [menu,setMenu] = useState(false);
   const [query,setQuery] = useState("");
   const [category,setCategory] = useState("Semua");
   const [group,setGroup] = useState("Semua");
-  const [selected,setSelected] = useState<null>(null);
+  const [selected,setSelected] = useState(null);
   const [status,setStatus] = useState("");
   const [searched,setSearched] = useState(false);
 
