@@ -3,7 +3,11 @@ name: Validate redesign
 on:
   push:
     branches:
+      - main
       - feat/content-migration-esri
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
