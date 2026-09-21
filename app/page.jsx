@@ -66,18 +66,13 @@ const quick = [
   {title:"Semua Layanan", desc:"Jelajahi seluruh service entry yang dipetakan.", query:""}
 ];
 
-function SectionIcon({type}:{type:string}) {
-  const C = type==="service" ? FileText : type==="location" ? MapPin : type==="ppid" ? ShieldCheck : type==="info" ? BookOpen : CircleHelp;
-  return <C className="h-5 w-5" />;
-}
-
 export default function DukcapilRedesign() {
   const [view,setView] = useState<"home"|"services"|"detail"|"ppid"|"status"|"info">("home");
   const [menu,setMenu] = useState(false);
   const [query,setQuery] = useState("");
   const [category,setCategory] = useState("Semua");
   const [group,setGroup] = useState("Semua");
-  const [selected,setSelected] = useState<(typeof services)[number] | null>(null);
+  const [selected,setSelected] = useState<null>(null);
   const [status,setStatus] = useState("");
   const [searched,setSearched] = useState(false);
 
@@ -90,7 +85,7 @@ export default function DukcapilRedesign() {
     );
   },[query,category,group]);
 
-  const openService = (s:(typeof services)[number]) => {
+  const openService = (s) => {
     setSelected(s); setView("detail"); window.scrollTo({top:0,behavior:"smooth"});
   };
 
