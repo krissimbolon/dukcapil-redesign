@@ -1,0 +1,62 @@
+name: One-time final UI polish
+
+on:
+  push:
+    branches:
+      - feat/content-migration-esri
+    paths:
+      - .github/workflows/polish-final.yml
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/content-migration-esri
+      - name: Apply final navigation and Esri typography polish
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+
+          const pagePath = "app/page.jsx";
+          let page = fs.readFileSync(pagePath, "utf8");
+          const replacements = [
+            [
+              '["kepala-dinas","Kepala Dinas","Profil pimpinan dan pengalaman strategis."],',
+              '["kepala-dinas","Kepala Dinas","Profil pimpinan dan pengalaman strategis."],\n ["profil-pejabat","Direktori pejabat","Struktur jabatan tanpa mengarang identitas yang belum dipublikasikan."],'
+            ],
+            ['onClick={()=>openInfo("forms")}', 'onClick={()=>openInfo("forms","home")}'],
+            ['onClick={()=>openInfo("statistics")}', 'onClick={()=>openInfo("statistics","home")}'],
+            ['onClick={()=>openInfo("pledge")}', 'onClick={()=>openInfo("pledge","home")}'],
+            ['WhatsApp Dukcapil atau sampaikan pengaduan melalui CRM Jakarta.', 'WA DJawara atau sampaikan pengaduan melalui CRM Jakarta.'],
+            ['WhatsApp 0812-1201-2031', 'WA DJawara 0812-120-120-31']
+          ];
+          for (const [from,to] of replacements) {
+            if (!page.includes(from)) throw new Error("Expected page fragment not found: " + from);
+            page = page.split(from).join(to);
+          }
+          fs.writeFileSync(pagePath, page);
+
+          const cssPath = "app/globals.css";
+          let css = fs.readFileSync(cssPath, "utf8");
+          css = css.replace(/font-weight:(?:750|800|850|900)/g, "font-weight:600");
+          if (!css.includes("body{font-synthesis:none}")) css += "\nbody{font-synthesis:none}\n";
+          fs.writeFileSync(cssPath, css);
+          NODE
+      - name: Remove one-time workflows
+        run: |
+          rm -f .github/workflows/upgrade-next-security.yml
+          rm -f .github/workflows/polish-final.yml
+      - name: Commit final polish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/page.jsx app/globals.css .github/workflows/
+          git commit -m "style: finish Esri typography and citizen navigation polish"
+          git push origin HEAD:feat/content-migration-esri
