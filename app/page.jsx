@@ -1,464 +1,259 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Search, ChevronRight, X, CheckCircle2, AlertCircle, Info, Menu, ArrowLeft, FileText, Users, CreditCard, MapPin, Phone, Mail, Clock, Download } from 'lucide-react';
+import { useMemo, useState } from "react";
+import {
+  Search, Menu, X, ChevronRight, ArrowLeft, MapPin, FileText, Users,
+  Building2, Globe2, CircleHelp, ExternalLink, CheckCircle2, Clock3,
+  ShieldCheck, Landmark, Megaphone, BookOpen, Phone, Mail
+} from "lucide-react";
 
-export default function DukcapilJakarta() { 
-  const [activeSection, setActiveSection] = useState('home');
-  const [searchHistory, setSearchHistory] = useState(['1234567890123456', '6543210987654321']);
-  const [formStep, setFormStep] = useState(1);
-  const [nikInput, setNikInput] = useState('');
-  const [nikError, setNikError] = useState('');
-  const [showMenu, setShowMenu] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
-  const [fileUploadError, setFileUploadError] = useState('');
-  const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [showTooltip, setShowTooltip] = useState('');
+const official = "https://kependudukancapil.jakarta.go.id/";
 
-  const handleNikChange = (e) => {
-    const value = e.target.value.replace(/\D/g, '');
-    setNikInput(value);
-    if (value.length > 0 && value.length < 16) {
-      setNikError('NIK harus 16 digit');
-    } else {
-      setNikError('');
-    }
+const services = [
+  { id:"KEL-001", title:"Kartu Tanda Penduduk Elektronik (E-KTP)", category:"Pendaftaran Penduduk", location:"Kelurahan", channel:"Kelurahan / Online", group:"Kelurahan" },
+  { id:"KEL-002", title:"Kartu Keluarga (KK)", category:"Pendaftaran Penduduk", location:"Kelurahan", channel:"Kelurahan / Online", group:"Kelurahan" },
+  { id:"KEL-003", title:"Kartu Identitas Anak (KIA)", category:"Pendaftaran Penduduk", location:"Kelurahan", channel:"Kelurahan / Online", group:"Kelurahan" },
+  { id:"KEL-004", title:"Akta Kelahiran", category:"Pencatatan Sipil", location:"Kelurahan", channel:"Kelurahan / Online", group:"Kelurahan" },
+  { id:"KEL-005", title:"Akta Kematian", category:"Pencatatan Sipil", location:"Kelurahan", channel:"Kelurahan / Online", group:"Kelurahan" },
+  { id:"KEL-006", title:"Pindah Datang", category:"Pendaftaran Penduduk", location:"Kelurahan", channel:"Kelurahan / Online", group:"Kelurahan" },
+  { id:"KEC-001", title:"Pencatatan Kelahiran WNI Terintegrasi dengan Fasilitas Kesehatan", category:"Pencatatan Sipil", location:"Kecamatan", channel:"Kecamatan / Online", group:"Kecamatan" },
+  { id:"KEC-002", title:"Pencatatan Kematian WNI Terintegrasi dengan Fasilitas Kesehatan", category:"Pencatatan Sipil", location:"Kecamatan", channel:"Kecamatan / Online", group:"Kecamatan" },
+  { id:"KEC-003", title:"Pencatatan Perkawinan WNI Terintegrasi dengan Rumah Ibadah", category:"Pencatatan Sipil", location:"Kecamatan", channel:"Kecamatan / Online", group:"Kecamatan" },
+  { id:"KEC-004", title:"Pencatatan Perkawinan WNI", category:"Pencatatan Sipil", location:"Kecamatan", channel:"Kecamatan / Online", group:"Kecamatan" },
+  { id:"KEC-005", title:"Pencatatan Perceraian WNI", category:"Pencatatan Sipil", location:"Kecamatan", channel:"Kecamatan / Online", group:"Kecamatan" },
+  { id:"KEC-006", title:"Perpindahan Penduduk WNI ke Luar Daerah", category:"Pendaftaran Penduduk", location:"Kecamatan", channel:"Kecamatan / Online", group:"Kecamatan" },
+  { id:"KEC-007", title:"Pendataan Penduduk Nonpermanen", category:"Pendaftaran Penduduk", location:"Kecamatan", channel:"Kecamatan / Online", group:"Kecamatan" },
+  { id:"KEC-008", title:"Penerbitan Kembali Kutipan Akta Pencatatan Sipil Karena Rusak/Hilang", category:"Pencatatan Sipil", location:"Kecamatan", channel:"Kecamatan / Online", group:"Kecamatan" },
+  { id:"KEC-009", title:"Legalisasi Dokumen Kependudukan Non Digital / Belum TTE", category:"Dokumen Kependudukan", location:"Kecamatan", channel:"Kecamatan / Online", group:"Kecamatan" },
+  { id:"SUD-001", title:"Pencatatan Biodata WNI dalam Wilayah NKRI/Dari Luar Wilayah NKRI", category:"Pendaftaran Penduduk", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-002", title:"Penerbitan Kartu Keluarga Baru WNI", category:"Pendaftaran Penduduk", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-003", title:"Penerbitan KTP-el Baru WNI", category:"Pendaftaran Penduduk", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-004", title:"Penerbitan Kartu Identitas Anak WNI", category:"Pendaftaran Penduduk", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-005", title:"Perpindahan Penduduk WNI Dalam NKRI", category:"Pendaftaran Penduduk", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-006", title:"Pembatalan Dokumen Pendaftaran Penduduk Tanpa Melalui Penetapan Pengadilan/Contrarius Actus", category:"Pendaftaran Penduduk", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-007", title:"Perekaman KTP-el bagi Penduduk yang Tidak Mampu Melaporkan Sendiri", category:"Pendaftaran Penduduk", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-008", title:"Dokumen Kependudukan Terintegrasi dengan Kantor Urusan Agama (KUA)", category:"Pendaftaran Penduduk", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-009", title:"Pencatatan Kelahiran bagi Anak yang Tidak Diketahui Asal-Usulnya atau Keberadaan Orang Tuanya", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-010", title:"Pencatatan Perkawinan Penduduk WNI", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-011", title:"Pencatatan Perkawinan Penduduk WNI yang Salah Satu atau Kedua Suami Isteri Meninggal Dunia Sebelum Pencatatan Perkawinan", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-012", title:"Pencatatan Pembatalan Perkawinan WNI", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-013", title:"Pencatatan Perceraian WNI", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-014", title:"Pencatatan Pembatalan Perceraian WNI", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-015", title:"Pencatatan Kematian dalam Wilayah NKRI", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-016", title:"Pencatatan Pengangkatan Anak WNI di Wilayah NKRI", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-017", title:"Pencatatan Pengakuan Anak di Wilayah NKRI", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-018", title:"Pencatatan Pengesahan Anak di Wilayah NKRI", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-019", title:"Pencatatan Perubahan Nama Penduduk WNI", category:"Perubahan Dokumen", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-020", title:"Pencatatan Perubahan Akta Pencatatan Sipil", category:"Perubahan Dokumen", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-021", title:"Pembetulan Akta Pencatatan Sipil dengan Permohonan dari Subjek Akta di Wilayah NKRI", category:"Perubahan Dokumen", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-022", title:"Pencatatan Pembatalan Akta Pencatatan Sipil Berdasarkan Putusan Pengadilan", category:"Perubahan Dokumen", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-023", title:"Pencatatan Pembatalan Akta Pencatatan Sipil Tanpa Putusan Pengadilan/Contrarius Actus", category:"Perubahan Dokumen", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-024", title:"Penerbitan Kembali Kutipan Akta Pencatatan Sipil Karena Rusak, Hilang, atau Penguasaan Salah Satu Pihak Yang Bersengketa", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-025", title:"Pencatatan Pelaporan Perjanjian Perkawinan yang Dibuat pada Waktu atau Sebelum Dilangsungkan Perkawinan", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-026", title:"Pencatatan Pelaporan Perjanjian Perkawinan yang Dibuat Selama Perkawinan", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-027", title:"Pencatatan Pelaporan Perubahan atau Pencabutan Perjanjian Perkawinan", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-028", title:"Pencatatan Peristiwa Penting Lainnya bagi Penduduk", category:"Pencatatan Sipil", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-029", title:"Legalisasi Dokumen Kependudukan yang Belum dengan Format Digital/Belum di Tanda Tangani secara Elektronik (TTE)", category:"Dokumen Kependudukan", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+  { id:"SUD-030", title:"Konfirmasi Dokumen Kependudukan", category:"Dokumen Kependudukan", location:"Suku Dinas", channel:"Sudin / Online", group:"Suku Dinas" },
+];
+
+const quick = [
+  {title:"KTP-el", desc:"Cari layanan KTP-el dan lihat kanal pelayanan.", query:"KTP"},
+  {title:"Kartu Keluarga", desc:"Temukan layanan penerbitan atau perubahan KK.", query:"Kartu Keluarga"},
+  {title:"Akta Kelahiran", desc:"Cari layanan pencatatan kelahiran.", query:"kelahiran"},
+  {title:"Akta Kematian", desc:"Cari layanan pencatatan kematian.", query:"kematian"},
+  {title:"Pindah Penduduk", desc:"Temukan layanan perpindahan penduduk.", query:"Perpindahan"},
+  {title:"Semua Layanan", desc:"Jelajahi seluruh service entry yang dipetakan.", query:""}
+];
+
+function SectionIcon({type}:{type:string}) {
+  const C = type==="service" ? FileText : type==="location" ? MapPin : type==="ppid" ? ShieldCheck : type==="info" ? BookOpen : CircleHelp;
+  return <C className="h-5 w-5" />;
+}
+
+export default function DukcapilRedesign() {
+  const [view,setView] = useState<"home"|"services"|"detail"|"ppid"|"status"|"info">("home");
+  const [menu,setMenu] = useState(false);
+  const [query,setQuery] = useState("");
+  const [category,setCategory] = useState("Semua");
+  const [group,setGroup] = useState("Semua");
+  const [selected,setSelected] = useState<(typeof services)[number] | null>(null);
+  const [status,setStatus] = useState("");
+  const [searched,setSearched] = useState(false);
+
+  const filtered = useMemo(() => {
+    const q=query.trim().toLowerCase();
+    return services.filter(s =>
+      (category==="Semua" || s.category===category) &&
+      (group==="Semua" || s.group===group) &&
+      (!q || [s.title,s.category,s.location,s.id].join(" ").toLowerCase().includes(q))
+    );
+  },[query,category,group]);
+
+  const openService = (s:(typeof services)[number]) => {
+    setSelected(s); setView("detail"); window.scrollTo({top:0,behavior:"smooth"});
   };
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-      if (!validTypes.includes(file.type)) {
-        setFileUploadError('Format file tidak valid. Gunakan JPG, PNG, atau PDF');
-        setUploadSuccess(false);
-      } else if (file.size > 2 * 1024 * 1024) {
-        setFileUploadError('Ukuran file terlalu besar. Maksimal 2MB');
-        setUploadSuccess(false);
-      } else {
-        setFileUploadError('');
-        setUploadSuccess(true);
-        setTimeout(() => setUploadSuccess(false), 3000);
-      }
-    }
+  const goServices = (q="") => {
+    setQuery(q); setView("services"); window.scrollTo({top:0,behavior:"smooth"});
   };
-
-  const quickLinks = [
-    { icon: <CreditCard className="w-6 h-6" />, title: "Perekaman KTP-el", desc: "Perekaman dan penerbitan KTP Elektronik untuk penduduk DKI Jakarta", time: "14 hari kerja", action: "ktp" },
-    { icon: <Users className="w-6 h-6" />, title: "Penerbitan Kartu Keluarga", desc: "Pembuatan dan perubahan data Kartu Keluarga", time: "7 hari kerja", action: "kk" },
-    { icon: <FileText className="w-6 h-6" />, title: "Akta Kelahiran", desc: "Penerbitan Akta Kelahiran untuk warga Jakarta", time: "14 hari kerja", action: "akta-lahir" },
-    { icon: <FileText className="w-6 h-6" />, title: "Akta Kematian", desc: "Penerbitan Akta Kematian dan pencatatan kematian", time: "7 hari kerja", action: "akta-mati" },
-    { icon: <MapPin className="w-6 h-6" />, title: "Surat Keterangan Pindah", desc: "Surat pindah antar kabupaten/kota atau luar negeri", time: "7 hari kerja", action: "pindah" },
-    { icon: <CreditCard className="w-6 h-6" />, title: "Identitas Kependudukan Digital", desc: "IKD - Identitas digital resmi untuk akses layanan online", time: "Instan", action: "ikd" }
-  ];
-
-  const ProgressStepper = ({ currentStep, totalSteps }) => (
-    <div className="mb-8">
-      <div className="flex items-center justify-between mb-2">
-        {[...Array(totalSteps)].map((_, i) => (
-          <React.Fragment key={i}>
-            <div className="flex flex-col items-center z-10">
-              <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-semibold transition-all ${
-                i + 1 <= currentStep ? 'bg-[#f97316] text-white shadow-lg' : 'bg-gray-200 text-gray-500'
-              }`}>
-                {i + 1 < currentStep ? <CheckCircle2 className="w-5 h-5" /> : i + 1}
-              </div>
-            </div>
-            {i < totalSteps - 1 && (
-              <div className={`flex-1 h-1 mx-[-10px] transition-all ${
-                i + 1 < currentStep ? 'bg-[#f97316]' : 'bg-gray-200'
-              }`} />
-            )}
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
-  );
 
   return (
-    <div className="min-h-screen bg-[#f4f7f9] font-sans text-gray-800">
-      {/* Header */}
-      <header className="bg-[#1e4b85] text-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveSection('home')}>
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                <span className="text-[#1e4b85] font-bold text-lg">DKI</span>
-              </div>
-              <div>
-                <h1 className="text-lg md:text-xl font-bold tracking-tight">Dinas Dukcapil DKI Jakarta</h1>
-                <p className="text-xs text-blue-200">Layanan Kependudukan Online</p>
-              </div>
-            </div>
-            
-            <nav className="hidden md:flex space-x-8 text-sm font-medium">
-              <button onClick={() => setActiveSection('home')} className={`transition hover:text-white ${activeSection === 'home' ? 'text-white border-b-2 border-[#f97316]' : 'text-gray-300'}`}>Beranda</button>
-              <button onClick={() => setActiveSection('home')} className={`transition hover:text-white ${activeSection === 'services' ? 'text-white border-b-2 border-[#f97316]' : 'text-gray-300'}`}>Layanan</button>
-              <button onClick={() => setActiveSection('ppid')} className={`transition hover:text-white ${activeSection === 'ppid' ? 'text-white border-b-2 border-[#f97316]' : 'text-gray-300'}`}>PPID</button>
-              <button onClick={() => setActiveSection('status')} className={`transition hover:text-white ${activeSection === 'status' ? 'text-white border-b-2 border-[#f97316]' : 'text-gray-300'}`}>Cek Status</button>
-              <button className="bg-[#f97316] text-white px-5 py-2 rounded-md hover:bg-orange-600 transition shadow-sm">Layanan Online</button>
-            </nav>
-
-            <button onClick={() => setShowMenu(!showMenu)} className="md:hidden text-white">
-              <Menu className="w-6 h-6" />
-            </button>
-          </div>
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+          <button onClick={()=>setView("home")} className="flex items-center gap-3 text-left">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#0b3b72] text-sm font-black text-white">DKI</div>
+            <div><div className="font-bold leading-tight text-[#0b3b72]">Dukcapil DKI Jakarta</div><div className="text-xs text-slate-500">Portal layanan kependudukan</div></div>
+          </button>
+          <nav className="hidden items-center gap-7 md:flex">
+            <button onClick={()=>setView("home")} className="text-sm font-semibold hover:text-[#0b3b72]">Beranda</button>
+            <button onClick={()=>goServices()} className="text-sm font-semibold hover:text-[#0b3b72]">Layanan</button>
+            <button onClick={()=>setView("status")} className="text-sm font-semibold hover:text-[#0b3b72]">Cek Status</button>
+            <button onClick={()=>setView("ppid")} className="text-sm font-semibold hover:text-[#0b3b72]">PPID</button>
+            <a href={official} target="_blank" rel="noreferrer" className="rounded-lg bg-[#f2b705] px-4 py-2 text-sm font-bold text-[#13233a]">Situs Existing ↗</a>
+          </nav>
+          <button onClick={()=>setMenu(!menu)} className="rounded-lg p-2 md:hidden" aria-label="Buka menu">{menu?<X/>:<Menu/>}</button>
         </div>
-
-        {/* Mobile Menu */}
-        {showMenu && (
-          <div className="md:hidden bg-[#153661] border-t border-blue-800">
-            <div className="px-4 py-3 space-y-2">
-              <button onClick={() => { setActiveSection('home'); setShowMenu(false); }} className="block w-full text-left py-2 text-white">Beranda</button>
-              <button onClick={() => { setActiveSection('ppid'); setShowMenu(false); }} className="block w-full text-left py-2 text-white">PPID</button>
-              <button onClick={() => { setActiveSection('status'); setShowMenu(false); }} className="block w-full text-left py-2 text-white">Cek Status</button>
-            </div>
+        {menu && <div className="border-t bg-white p-4 md:hidden">
+          <div className="grid gap-2">
+            <button className="rounded-lg p-3 text-left hover:bg-slate-50" onClick={()=>{setView("home");setMenu(false)}}>Beranda</button>
+            <button className="rounded-lg p-3 text-left hover:bg-slate-50" onClick={()=>{goServices();setMenu(false)}}>Layanan</button>
+            <button className="rounded-lg p-3 text-left hover:bg-slate-50" onClick={()=>{setView("status");setMenu(false)}}>Cek Status</button>
+            <button className="rounded-lg p-3 text-left hover:bg-slate-50" onClick={()=>{setView("ppid");setMenu(false)}}>PPID</button>
           </div>
-        )}
+        </div>}
       </header>
 
-      <main className="pb-16">
-        {/* Home Section */}
-        {activeSection === 'home' && (
-          <div className="space-y-0">
-            {/* Hero Banner */}
-            <div className="bg-[#245b9e] text-white pt-16 pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-              <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
-                <div className="max-w-2xl">
-                  <span className="inline-block py-1 px-3 rounded-full bg-[#1e4b85] border border-blue-400 text-sm mb-6">Portal Layanan Kependudukan</span>
-                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                    Layanan Kependudukan Jakarta dalam Genggaman Anda
-                  </h2>
-                  <p className="text-blue-100 mb-8 text-lg font-light">
-                    Akses layanan administrasi kependudukan DKI Jakarta dengan mudah, cepat, dan aman secara online.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button 
-                      onClick={() => document.getElementById('layanan-utama').scrollIntoView({ behavior: 'smooth' })}
-                      className="bg-[#f97316] text-white px-8 py-3 rounded-md font-semibold hover:bg-orange-600 transition flex items-center justify-center shadow-lg"
-                    >
-                      Ajukan Layanan Sekarang
-                      <ChevronRight className="ml-2 w-5 h-5" />
-                    </button>
-                    <button 
-                      onClick={() => setActiveSection('status')}
-                      className="bg-transparent text-white px-8 py-3 rounded-md font-semibold hover:bg-[#1e4b85] transition border border-white flex items-center justify-center"
-                    >
-                      Cek Status Dokumen
-                    </button>
-                  </div>
-                </div>
-
-                {/* Hero Stats */}
-                <div className="space-y-4 md:pl-10">
-                   <div className="bg-white rounded-xl shadow-lg p-6 text-gray-800 flex flex-col justify-center transform hover:-translate-y-1 transition duration-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                        <Users className="w-5 h-5 text-[#245b9e]" />
-                      </div>
-                      <span className="text-[10px] tracking-wider text-gray-400 font-bold uppercase">Update Terbaru</span>
-                    </div>
-                    <h3 className="text-4xl font-extrabold text-[#113054] tracking-tight">10.881.514</h3>
-                    <p className="text-sm text-gray-500 font-medium mt-1">Jiwa Penduduk DKI Jakarta</p>
-                  </div>
-                  <div className="bg-white rounded-xl shadow-lg p-6 text-gray-800 flex flex-col justify-center transform hover:-translate-y-1 transition duration-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-[#f97316]" />
-                      </div>
-                      <span className="text-[10px] tracking-wider text-gray-400 font-bold uppercase">Data Terkini</span>
-                    </div>
-                    <h3 className="text-4xl font-extrabold text-[#113054] tracking-tight">3.599.700</h3>
-                    <p className="text-sm text-gray-500 font-medium mt-1">Kepala Keluarga</p>
-                  </div>
+      <main>
+        {view==="home" && <section>
+          <div className="bg-[#0b3b72] text-white">
+            <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.2fr_.8fr] lg:px-8 lg:py-24">
+              <div>
+                <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-sm font-semibold">Redesign konsep — berbasis kebutuhan warga</span>
+                <h1 className="mt-5 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">Cari layanan berdasarkan kebutuhan, bukan struktur kantor.</h1>
+                <p className="mt-5 max-w-2xl text-lg leading-8 text-blue-100">Satu pintu untuk menemukan layanan kependudukan, memahami kanal pelayanan, dan melanjutkan ke sumber resmi tanpa kehilangan konteks.</p>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <button onClick={()=>goServices()} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#f2b705] px-6 py-3 font-bold text-[#13233a]">Cari layanan <ChevronRight/></button>
+                  <button onClick={()=>setView("status")} className="rounded-xl border border-white/30 px-6 py-3 font-bold hover:bg-white/10">Cek status layanan</button>
                 </div>
               </div>
-            </div>
-
-            {/* Quick Links / Layanan Utama */}
-            <div id="layanan-utama" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-              <div className="text-center mb-12">
-                <h3 className="text-3xl font-bold text-[#113054] mb-3">Layanan Utama Kami</h3>
-                <p className="text-gray-500 max-w-2xl mx-auto">Berbagai layanan kependudukan yang dapat Anda akses dengan mudah dan cepat tanpa harus datang ke kantor.</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {quickLinks.map((link, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setSelectedService(link);
-                      setActiveSection('form');
-                      setFormStep(1);
-                      window.scrollTo(0,0);
-                    }}
-                    className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all p-8 text-left group border border-gray-100 relative overflow-hidden"
-                  >
-                    <div className="mb-6">
-                      <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-[#245b9e] group-hover:scale-110 transition duration-300">
-                        {link.icon}
-                      </div>
-                    </div>
-                    <h4 className="text-lg font-bold text-[#113054] mb-2">{link.title}</h4>
-                    <p className="text-sm text-gray-500 mb-6 leading-relaxed min-h-[40px]">{link.desc}</p>
-                    
-                    <div className="flex items-center justify-between mt-auto border-t border-gray-50 pt-4">
-                      <span className="flex items-center text-xs font-medium text-amber-500">
-                        ⚡ {link.time}
-                      </span>
-                      <span className="text-sm font-semibold text-[#f97316] flex items-center group-hover:text-orange-600">
-                        Selengkapnya <ChevronRight className="w-4 h-4 ml-1" />
-                      </span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-              
-              <div className="text-center mt-10">
-                <button className="bg-[#113054] text-white px-6 py-3 rounded-md font-medium hover:bg-blue-900 transition shadow-sm inline-flex items-center">
-                  Lihat Semua Layanan <ChevronRight className="w-4 h-4 ml-2" />
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Formulir Layanan (Loket Virtual) */}
-        {activeSection === 'form' && selectedService && (
-          <div className="max-w-4xl mx-auto px-4 py-12">
-            <button
-              onClick={() => { setActiveSection('home'); setFormStep(1); setNikInput(''); }}
-              className="flex items-center text-gray-500 hover:text-[#f97316] mb-8 font-medium transition"
-            >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Kembali ke Beranda
-            </button>
-
-            <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
-              <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold text-[#113054] mb-3">{selectedService.title}</h2>
-                <p className="text-gray-500">{selectedService.desc}</p>
-              </div>
-
-              <ProgressStepper currentStep={formStep} totalSteps={3} />
-
-              {formStep === 1 && (
-                <div className="space-y-6 mt-10">
-                  <div className="bg-blue-50 p-4 rounded-lg flex items-start text-sm text-[#245b9e] mb-6 border border-blue-100">
-                    <Info className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
-                    <p>Pastikan NIK dan data diri yang dimasukkan sesuai dengan Kartu Keluarga terbaru Anda.</p>
+              <div className="rounded-3xl bg-white p-5 text-slate-900 shadow-2xl">
+                <div className="rounded-2xl bg-slate-50 p-5">
+                  <p className="text-sm font-bold text-[#0b3b72]">Mulai dari kebutuhan Anda</p>
+                  <div className="mt-4 flex items-center gap-3 rounded-xl border bg-white p-3"><Search className="text-slate-400"/><input aria-label="Cari layanan" value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>e.key==="Enter"&&goServices(query)} placeholder="Contoh: KTP, kelahiran, pindah..." className="w-full outline-none"/></div>
+                  <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                    {quick.slice(0,4).map(q=><button key={q.title} onClick={()=>goServices(q.query)} className="rounded-xl border bg-white p-3 text-left hover:border-[#0b3b72]"><div className="font-bold">{q.title}</div><div className="mt-1 text-xs text-slate-500">{q.desc}</div></button>)}
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">NIK (Nomor Induk Kependudukan)</label>
-                    <input
-                      type="text"
-                      maxLength="16"
-                      value={nikInput}
-                      onChange={handleNikChange}
-                      placeholder="Contoh: 3171234567890001"
-                      className={`w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-[#f97316] focus:border-transparent transition outline-none ${
-                        nikError ? 'border-red-400' : 'border-gray-200'
-                      }`}
-                    />
-                    {nikError && <div className="flex items-center mt-2 text-red-500 text-xs font-medium"><AlertCircle className="w-3 h-3 mr-1" />{nikError}</div>}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap Sesuai KTP</label>
-                    <input type="text" placeholder="Masukkan nama lengkap" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#f97316] outline-none" />
-                  </div>
-
-                  <div className="flex justify-end pt-8 border-t border-gray-100 mt-8">
-                    <button
-                      onClick={() => nikInput.length === 16 && setFormStep(2)}
-                      disabled={nikInput.length !== 16}
-                      className="px-8 py-3 bg-[#f97316] text-white rounded-lg font-semibold hover:bg-orange-600 disabled:bg-gray-300 transition flex items-center shadow-md"
-                    >
-                      Lanjut ke Unggah Dokumen <ChevronRight className="ml-2 w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {formStep === 2 && (
-                <div className="space-y-6 mt-10">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Scan/Foto Kartu Keluarga Asli</label>
-                    <div className="border-2 border-dashed border-gray-300 bg-gray-50 rounded-xl p-8 text-center hover:border-[#f97316] hover:bg-orange-50 transition cursor-pointer">
-                      <input type="file" accept="image/*,.pdf" onChange={handleFileUpload} className="hidden" id="upload-kk" />
-                      <label htmlFor="upload-kk" className="cursor-pointer flex flex-col items-center">
-                        <Download className="w-8 h-8 text-gray-400 mb-3" />
-                        <span className="text-sm font-medium text-[#113054] mb-1">Klik untuk unggah atau seret file ke sini</span>
-                        <span className="text-xs text-gray-400">Maksimal 2MB (JPG, PNG, PDF)</span>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between pt-8 border-t border-gray-100 mt-8">
-                    <button onClick={() => setFormStep(1)} className="px-6 py-3 text-gray-500 hover:text-gray-800 font-medium flex items-center">
-                      <ArrowLeft className="mr-2 w-5 h-5" /> Kembali
-                    </button>
-                    <button onClick={() => setFormStep(3)} className="px-8 py-3 bg-[#f97316] text-white rounded-lg font-semibold hover:bg-orange-600 transition flex items-center shadow-md">
-                      Lanjut Konfirmasi <ChevronRight className="ml-2 w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {formStep === 3 && (
-                <div className="space-y-6 mt-10">
-                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-                    <h4 className="font-bold text-[#113054] mb-4 border-b border-gray-200 pb-3">Ringkasan Pengajuan</h4>
-                    <div className="space-y-4 text-sm">
-                      <div className="flex justify-between items-center"><span className="text-gray-500">Layanan</span><span className="font-semibold text-gray-800">{selectedService.title}</span></div>
-                      <div className="flex justify-between items-center"><span className="text-gray-500">NIK Pemohon</span><span className="font-semibold text-gray-800">{nikInput}</span></div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-3 p-4 bg-orange-50 rounded-lg border border-orange-100">
-                    <input type="checkbox" id="agreement" className="mt-1 w-4 h-4 text-[#f97316] border-gray-300 rounded focus:ring-[#f97316]" />
-                    <label htmlFor="agreement" className="text-sm text-gray-700 leading-relaxed">
-                      Saya menyatakan bahwa dokumen yang diunggah adalah sah dan benar. Saya bersedia menerima sanksi hukum sesuai peraturan perundang-undangan jika memalsukan data.
-                    </label>
-                  </div>
-
-                  <div className="flex justify-between pt-8 border-t border-gray-100 mt-8">
-                    <button onClick={() => setFormStep(2)} className="px-6 py-3 text-gray-500 hover:text-gray-800 font-medium flex items-center">
-                      <ArrowLeft className="mr-2 w-5 h-5" /> Kembali
-                    </button>
-                    <button onClick={() => {
-                        alert('Permohonan diajukan! No Resi: REG-26-XYZ');
-                        setActiveSection('status');
-                      }} 
-                      className="px-8 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition flex items-center shadow-md"
-                    >
-                      <CheckCircle2 className="mr-2 w-5 h-5" /> Kirim Permohonan
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* PPID / Permohonan Informasi Publik */}
-        {activeSection === 'ppid' && (
-          <div className="max-w-4xl mx-auto px-4 py-12">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-[#113054] mb-3">Permohonan Informasi Publik (PPID)</h2>
-              <p className="text-gray-500">Formulir pengajuan permintaan informasi publik ke Dinas Kependudukan dan Pencatatan Sipil Provinsi DKI Jakarta sesuai UU No. 14 Tahun 2008.</p>
-            </div>
-
-            <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
-              <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert("Permintaan informasi berhasil dikirim ke petugas PPID."); setActiveSection('home'); }}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">NIK Pemohon</label>
-                    <input required type="text" maxLength="16" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#f97316] outline-none" placeholder="16 Digit NIK" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
-                    <input required type="text" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#f97316] outline-none" placeholder="Sesuai KTP" />
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Rincian Informasi yang Dibutuhkan</label>
-                  <textarea required rows="4" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#f97316] outline-none" placeholder="Sebutkan secara spesifik data atau dokumen informasi publik yang Anda butuhkan..."></textarea>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Tujuan Penggunaan Informasi</label>
-                  <input required type="text" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#f97316] outline-none" placeholder="Misal: Keperluan penelitian akademik, pelaporan jurnalistik, dll." />
-                </div>
-
-                <div className="flex justify-end pt-6 border-t border-gray-100 mt-8">
-                  <button type="submit" className="px-8 py-3 bg-[#113054] text-white rounded-lg font-semibold hover:bg-blue-900 transition shadow-md">
-                    Kirim Permohonan Informasi
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* Cek Status Layanan */}
-        {activeSection === 'status' && (
-          <div className="max-w-3xl mx-auto px-4 py-16">
-            <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100 text-center">
-              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Search className="w-8 h-8 text-[#245b9e]" />
-              </div>
-              <h2 className="text-3xl font-bold text-[#113054] mb-2">Lacak Status Dokumen</h2>
-              <p className="text-gray-500 mb-8">Masukkan Nomor Resi Registrasi atau NIK Anda untuk mengetahui progres layanan kependudukan.</p>
-              
-              <div className="relative max-w-lg mx-auto">
-                <input
-                  type="text"
-                  placeholder="Contoh: REG-26-XYZ atau 3171..."
-                  className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-full focus:ring-2 focus:ring-[#f97316] outline-none text-center text-lg font-medium tracking-wide"
-                />
-                <button className="absolute right-2 top-2 bottom-2 bg-[#f97316] text-white px-6 rounded-full font-semibold hover:bg-orange-600 transition">
-                  Lacak
-                </button>
-              </div>
-
-              {/* Riwayat Pencarian (Heuristik #6: Recognition over recall) */}
-              <div className="mt-8">
-                <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-3">Pencarian Terakhir Anda</p>
-                <div className="flex justify-center gap-3">
-                  <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium text-gray-600 transition">REG-26-XYZ</button>
-                  <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium text-gray-600 transition">3171200030004000</button>
                 </div>
               </div>
             </div>
           </div>
-        )}
+
+          <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div><p className="text-sm font-bold uppercase tracking-wider text-[#0b3b72]">Alur utama</p><h2 className="mt-1 text-3xl font-black">Dari kebutuhan sampai kanal layanan</h2></div>
+              <p className="max-w-xl text-sm leading-6 text-slate-600">Redesign memisahkan informasi tentang <b>apa</b> layanan, <b>di mana</b> dilayani, dan <b>bagaimana</b> melanjutkannya.</p>
+            </div>
+            <div className="mt-8 grid gap-4 md:grid-cols-4">
+              {[
+                ["01","Temukan","Cari berdasarkan dokumen/peristiwa."],
+                ["02","Pahami","Lihat persyaratan dan prosedur resmi."],
+                ["03","Pilih kanal","Website, kelurahan, kecamatan, Sudin, atau kanal resmi terkait."],
+                ["04","Lanjutkan","Handoff jelas ke kanal resmi tanpa membuat layanan palsu."]
+              ].map(([n,t,d])=><div key={n} className="rounded-2xl border bg-white p-5"><span className="text-sm font-black text-[#f2b705]">{n}</span><h3 className="mt-3 font-bold">{t}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{d}</p></div>)}
+            </div>
+          </section>
+
+          <section className="bg-white border-y">
+            <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+              <div className="grid gap-5 md:grid-cols-4">
+                {[
+                  [services.length+"+","service entry yang dipetakan","Layanan Kelurahan, Kecamatan, dan Suku Dinas"],
+                  ["6","layanan Kelurahan","Kelompok layanan utama existing"],
+                  ["9","layanan Kecamatan","Standar pelayanan existing"],
+                  ["30","layanan Suku Dinas","Standar pelayanan existing"]
+                ].map(([a,b,c])=><div key={a} className="rounded-2xl bg-slate-50 p-5"><div className="text-3xl font-black text-[#0b3b72]">{a}</div><div className="mt-1 font-bold">{b}</div><div className="mt-2 text-xs text-slate-500">{c}</div></div>)}
+              </div>
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+            <div className="rounded-3xl bg-[#13233a] p-7 text-white sm:p-10">
+              <div className="grid gap-7 md:grid-cols-[1fr_auto] md:items-center">
+                <div><p className="text-sm font-bold text-[#f2b705]">Transparansi sumber</p><h2 className="mt-2 text-2xl font-black">Informasi resmi tetap menjadi sumber kebenaran.</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Prototype ini tidak menggantikan sistem pemerintah dan tidak mengarang persyaratan. Detail yang belum dimigrasikan diarahkan ke halaman resmi.</p></div>
+                <a href={official} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 font-bold text-[#13233a]">Buka situs resmi <ExternalLink size={18}/></a>
+              </div>
+            </div>
+          </section>
+        </section>}
+
+        {view==="services" && <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <button onClick={()=>setView("home")} className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-[#0b3b72]"><ArrowLeft size={18}/> Beranda</button>
+          <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
+            <aside className="h-fit rounded-2xl border bg-white p-5 lg:sticky lg:top-24">
+              <h1 className="text-xl font-black">Cari layanan</h1>
+              <div className="mt-4 flex items-center gap-2 rounded-xl border p-3"><Search size={18} className="text-slate-400"/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Ketik kata kunci..." className="w-full outline-none text-sm"/></div>
+              <label className="mt-5 block text-xs font-bold uppercase text-slate-500">Kategori</label>
+              <select value={category} onChange={e=>setCategory(e.target.value)} className="mt-2 w-full rounded-xl border p-3 text-sm"><option>Semua</option>{[...new Set(services.map(s=>s.category))].map(x=><option key={x}>{x}</option>)}</select>
+              <label className="mt-4 block text-xs font-bold uppercase text-slate-500">Lokasi existing</label>
+              <select value={group} onChange={e=>setGroup(e.target.value)} className="mt-2 w-full rounded-xl border p-3 text-sm"><option>Semua</option><option>Kelurahan</option><option>Kecamatan</option><option>Suku Dinas</option></select>
+              <div className="mt-5 rounded-xl bg-blue-50 p-4 text-xs leading-5 text-blue-900">Hasil di bawah mempertahankan service entry existing. Redesign hanya mengubah cara menemukannya.</div>
+            </aside>
+            <div>
+              <div className="mb-5 flex items-end justify-between gap-4"><div><p className="text-sm font-bold text-[#0b3b72]">{filtered.length} hasil</p><h2 className="text-3xl font-black">Semua layanan</h2></div></div>
+              <div className="grid gap-4">
+                {filtered.map(s=><button key={s.id} onClick={()=>openService(s)} className="group rounded-2xl border bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[#0b3b72] hover:shadow-lg">
+                  <div className="flex items-start justify-between gap-5"><div><div className="mb-2 flex flex-wrap gap-2"><span className="rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-bold text-[#0b3b72]">{s.group}</span><span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">{s.category}</span></div><h3 className="text-lg font-bold leading-7">{s.title}</h3><div className="mt-3 flex flex-wrap gap-4 text-xs text-slate-500"><span className="inline-flex items-center gap-1"><MapPin size={14}/>{s.location}</span><span className="inline-flex items-center gap-1"><Globe2 size={14}/>{s.channel}</span><span className="font-mono">{s.id}</span></div></div><ChevronRight className="mt-1 shrink-0 text-slate-300 transition group-hover:text-[#0b3b72]"/></div>
+                </button>)}
+              </div>
+            </div>
+          </div>
+        </section>}
+
+        {view==="detail" && selected && <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+          <button onClick={()=>setView("services")} className="mb-7 inline-flex items-center gap-2 text-sm font-bold text-slate-500"><ArrowLeft size={18}/> Kembali ke daftar layanan</button>
+          <div className="overflow-hidden rounded-3xl border bg-white shadow-sm">
+            <div className="bg-[#0b3b72] p-7 text-white sm:p-10"><div className="flex flex-wrap gap-2"><span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold">{selected.group}</span><span className="rounded-full bg-[#f2b705] px-3 py-1 text-xs font-bold text-[#13233a]">{selected.category}</span></div><h1 className="mt-5 text-3xl font-black leading-tight">{selected.title}</h1><p className="mt-3 text-blue-100">ID inventory: {selected.id}</p></div>
+            <div className="grid gap-6 p-7 sm:p-10">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl bg-slate-50 p-5"><div className="text-xs font-bold uppercase text-slate-500">Di mana?</div><div className="mt-2 flex items-center gap-2 font-bold"><MapPin size={18} className="text-[#0b3b72]"/>{selected.location}</div></div>
+                <div className="rounded-2xl bg-slate-50 p-5"><div className="text-xs font-bold uppercase text-slate-500">Kanal existing</div><div className="mt-2 flex items-center gap-2 font-bold"><Globe2 size={18} className="text-[#0b3b72]"/>{selected.channel}</div></div>
+              </div>
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5"><div className="flex items-start gap-3"><ShieldCheck className="mt-0.5 text-amber-700"/><div><h2 className="font-bold text-amber-950">Persyaratan & prosedur</h2><p className="mt-1 text-sm leading-6 text-amber-900">Untuk menjaga akurasi, prototype ini tidak menyalin atau mengarang persyaratan. Gunakan sumber resmi berikut untuk persyaratan terbaru layanan ini.</p></div></div></div>
+              <div className="grid gap-3 sm:grid-cols-2"><a href={official} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0b3b72] px-5 py-3 font-bold text-white">Buka sumber resmi <ExternalLink size={17}/></a><button onClick={()=>setView("status")} className="inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-3 font-bold">Cek status <Clock3 size={17}/></button></div>
+            </div>
+          </div>
+        </section>}
+
+        {view==="status" && <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+          <button onClick={()=>setView("home")} className="mb-7 inline-flex items-center gap-2 text-sm font-bold text-slate-500"><ArrowLeft size={18}/> Beranda</button>
+          <div className="rounded-3xl border bg-white p-7 shadow-sm sm:p-10">
+            <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-blue-50 text-[#0b3b72]"><Search/></div>
+            <h1 className="mt-5 text-center text-3xl font-black">Cek status layanan</h1>
+            <p className="mx-auto mt-3 max-w-xl text-center text-slate-500">Masukkan nomor resi atau informasi yang diberikan kanal layanan resmi.</p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row"><input value={status} onChange={e=>{setStatus(e.target.value);setSearched(false)}} placeholder="Contoh nomor resi..." className="flex-1 rounded-xl border px-4 py-3 outline-none focus:border-[#0b3b72]"/><button onClick={()=>setSearched(true)} className="rounded-xl bg-[#0b3b72] px-6 py-3 font-bold text-white">Lacak</button></div>
+            {searched && <div className="mt-6 rounded-2xl border border-blue-200 bg-blue-50 p-5"><div className="flex gap-3"><CheckCircle2 className="text-blue-700"/><div><b>Prototype interaksi</b><p className="mt-1 text-sm text-blue-900">Nomor <span className="font-mono">{status || "—"}</span> diterima. Integrasi status nyata belum diaktifkan karena membutuhkan API resmi.</p></div></div></div>}
+          </div>
+        </section>}
+
+        {view==="ppid" && <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+          <button onClick={()=>setView("home")} className="mb-7 inline-flex items-center gap-2 text-sm font-bold text-slate-500"><ArrowLeft size={18}/> Beranda</button>
+          <div className="rounded-3xl border bg-white p-7 sm:p-10">
+            <div className="flex items-start gap-4"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-blue-50 text-[#0b3b72]"><ShieldCheck/></div><div><p className="text-sm font-bold text-[#0b3b72]">Informasi Publik</p><h1 className="mt-1 text-3xl font-black">PPID</h1><p className="mt-3 max-w-3xl leading-7 text-slate-600">Pada redesign, PPID tetap dipertahankan sebagai area informasi publik yang terpisah dari pencarian layanan warga.</p></div></div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{["Permohonan Informasi Publik Online","Pengajuan Keberatan Online","Daftar Informasi Publik","Informasi Berkala","Informasi Setiap Saat","Informasi Serta Merta","Standar Pelayanan Informasi Publik","Formulir Permohonan","Jadwal Pelayanan Informasi Publik","Laporan Tahunan","Maklumat Pelayanan","Daftar Informasi Dikecualikan"].map(x=><div key={x} className="rounded-2xl border p-5"><h3 className="font-bold">{x}</h3><p className="mt-2 text-xs leading-5 text-slate-500">Tetap tersedia dalam struktur informasi publik; detail diarahkan ke sumber resmi.</p></div>)}</div>
+            <a href={official} target="_blank" rel="noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#0b3b72] px-5 py-3 font-bold text-white">Buka PPID di situs resmi <ExternalLink size={17}/></a>
+          </div>
+        </section>}
+
+        {view==="info" && <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6"><div className="rounded-3xl bg-white p-10 text-center border"><BookOpen className="mx-auto text-[#0b3b72]"/><h1 className="mt-4 text-3xl font-black">Informasi Dukcapil</h1><p className="mx-auto mt-3 max-w-2xl text-slate-500">Profil, lokasi Sudin, publikasi, nomor layanan, penghargaan, standar pelayanan, SOP, dan formulir tetap menjadi bagian dari konten redesign.</p><a href={official} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-xl bg-[#0b3b72] px-5 py-3 font-bold text-white">Buka sumber resmi</a></div></section>}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-[#113054] text-gray-300 pt-16 pb-8 border-t-4 border-[#f97316]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center text-[#113054] font-bold">DKI</div>
-                <div>
-                  <h3 className="text-lg font-bold text-white">Dinas Dukcapil</h3>
-                  <p className="text-xs text-blue-300">DKI Jakarta</p>
-                </div>
-              </div>
-              <p className="text-sm leading-relaxed mb-6">Dinas Kependudukan dan Pencatatan Sipil Provinsi DKI Jakarta melayani administrasi kependudukan untuk seluruh warga ibukota dengan cepat, akurat, dan gratis.</p>
-            </div>
-            
-            <div>
-              <h4 className="font-bold text-white mb-4">Navigasi Cepat</h4>
-              <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:text-[#f97316] transition">Profil Dinas</a></li>
-                <li><a href="#" className="hover:text-[#f97316] transition">Layanan Online</a></li>
-                <li><a href="#" className="hover:text-[#f97316] transition">PPID & Informasi Publik</a></li>
-                <li><a href="#" className="hover:text-[#f97316] transition">Cek Status Laporan</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-bold text-white mb-4">Kontak Kami</h4>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start"><MapPin className="w-4 h-4 mr-2 mt-1 flex-shrink-0" /> Jl. Letjen S. Parman No.7, Jakarta Barat</li>
-                <li className="flex items-center"><Phone className="w-4 h-4 mr-2" /> 1500-717</li>
-                <li className="flex items-center"><Mail className="w-4 h-4 mr-2" /> dukcapil@jakarta.go.id</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-blue-900 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
-            <p>&copy; 2026 Dinas Dukcapil Provinsi DKI Jakarta. Hak Cipta Dilindungi.</p>
-            <div className="flex space-x-4 mt-4 md:mt-0">
-              <a href="#" className="hover:text-white">Kebijakan Privasi</a>
-              <a href="#" className="hover:text-white">Syarat Ketentuan</a>
-            </div>
-          </div>
+      <footer className="border-t bg-[#13233a] text-slate-300">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+          <div><div className="flex items-center gap-3"><div className="grid h-10 w-10 place-items-center rounded-lg bg-white font-black text-[#0b3b72]">DKI</div><b className="text-white">Dukcapil DKI Jakarta</b></div><p className="mt-4 text-sm leading-6">Prototype redesign untuk proyek IMK. Informasi layanan harus diverifikasi terhadap sumber resmi sebelum digunakan sebagai informasi operasional.</p></div>
+          <div><h3 className="font-bold text-white">Navigasi</h3><div className="mt-3 grid gap-2 text-sm"><button className="text-left hover:text-white" onClick={()=>setView("home")}>Beranda</button><button className="text-left hover:text-white" onClick={()=>goServices()}>Layanan</button><button className="text-left hover:text-white" onClick={()=>setView("ppid")}>PPID</button><button className="text-left hover:text-white" onClick={()=>setView("status")}>Cek Status</button></div></div>
+          <div><h3 className="font-bold text-white">Sumber</h3><a href={official} target="_blank" rel="noreferrer" className="mt-3 flex items-center gap-2 text-sm hover:text-white"><ExternalLink size={16}/> Website resmi Disdukcapil DKI</a><p className="mt-3 text-xs text-slate-500">Versi prototype akademik — bukan sistem pelayanan pemerintah.</p></div>
         </div>
       </footer>
     </div>
