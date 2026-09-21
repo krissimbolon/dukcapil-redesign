@@ -83,3 +83,38 @@ body{font-family:var(--font-esri);font-weight:400;letter-spacing:.002em}
   .info-cards{display:grid;grid-template-columns:1fr}
   .info-cards article,.info-cards article:nth-child(7n+1),.info-cards article:nth-child(7n+5){grid-column:auto;min-height:0}
 }
+
+
+/* Service standards migrated from the official service catalog */
+.service-requirements{display:grid;gap:.9rem}
+.requirement-group{padding:1rem 1.05rem;border:1px solid #dbe3ec;border-radius:10px;background:#fbfcfe}
+.requirement-group h3{margin:0 0 .7rem;color:var(--deep);font-size:.9rem;font-weight:600}
+.requirement-group ul{display:grid;gap:.55rem;margin:0;padding:0;list-style:none}
+.requirement-group li{display:flex;align-items:flex-start;gap:.55rem;color:#4b5e72;font-size:.82rem;line-height:1.55}
+.requirement-group li svg{width:16px;height:16px;flex:none;margin-top:.12rem;color:#25704a}
+.service-notes{display:grid;gap:.45rem;margin-top:.85rem;padding:.85rem 1rem;border-left:3px solid var(--gold);background:#fff9e9}
+.service-notes p{display:flex;align-items:flex-start;gap:.55rem;margin:0;color:#5f512c;font-size:.78rem;line-height:1.55}
+.service-notes svg{width:15px;flex:none;margin-top:.12rem}
+.inline-link{display:inline-flex;align-items:center;gap:.35rem;margin-top:.9rem;color:var(--navy);font-weight:600}
+.inline-link svg{width:16px}
+
+/* Searchable content directory */
+.info-directory{margin:1.8rem 0 1.15rem;padding:1rem;border:1px solid #dbe3ec;border-radius:12px;background:#fff;box-shadow:var(--shadow-esri)}
+.info-search{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.7rem;padding:.72rem .85rem;border:1px solid #cfd9e4;border-radius:8px;background:#f8fafc}
+.info-search>svg{width:18px;color:#64748b}
+.info-search input{min-width:0;border:0;outline:0;background:transparent;color:var(--ink)}
+.info-search span{color:#64748b;font-size:.72rem;white-space:nowrap}
+.info-filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.8rem}
+.info-filters button{padding:.48rem .7rem;border:1px solid #d5dee8;border-radius:999px;background:#fff;color:#526174;font-size:.72rem;font-weight:500}
+.info-filters button:hover{border-color:#92a9bf;color:var(--navy)}
+.info-filters button.active{border-color:var(--navy);background:var(--navy);color:#fff}
+.info-cards article>small{margin:.2rem 0 .8rem;color:#718096;font-size:.7rem}
+.empty-state{display:grid;place-items:center;text-align:center;min-height:260px;padding:2rem;border:1px dashed #c9d5e1;border-radius:12px;background:#f8fafc}
+.empty-state svg{width:28px;color:#8191a2}
+.empty-state h2{margin:.7rem 0 .25rem;color:var(--deep);font-size:1.15rem;font-weight:600}
+.empty-state p{margin:0;color:#64748b;font-size:.85rem}
+
+@media(max-width:640px){
+  .info-search{grid-template-columns:auto 1fr}
+  .info-search span{grid-column:2}
+}
