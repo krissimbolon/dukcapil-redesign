@@ -179,6 +179,59 @@ export const informationItems = [
     links:[["Kirim pengaduan","https://pengaduanwarga.jakarta.go.id/"]]
   },
   {
+    id:"kepala-dinas", tag:"Profil", title:"Profil Kepala Dinas", date:"Pimpinan Dinas",
+    summary:"Denny Wahyu Haryanto menjabat Kepala Dinas Kependudukan dan Pencatatan Sipil Provinsi DKI Jakarta.",
+    body:["Denny Wahyu Haryanto merupakan birokrat Pemerintah Provinsi DKI Jakarta dengan pengalaman panjang di bidang pemerintahan, administrasi, kebencanaan, pelayanan terpadu, dan tata kelola organisasi.","Ia dipercaya memimpin Dinas Kependudukan dan Pencatatan Sipil Provinsi DKI Jakarta pada 2025."],
+    groups:[
+      {title:"Pendidikan",items:["Diploma III Sekolah Tinggi Pemerintahan Dalam Negeri (1993)","Sarjana Ilmu Pemerintahan, Institut Ilmu Pemerintahan Jakarta (1998)","Magister Ilmu Pemerintahan, Universitas Satyagama (2007)"]},
+      {title:"Pengalaman strategis",items:["Camat Kepulauan Seribu Selatan","Camat Pasar Rebo","Kepala Biro Organisasi dan Tatalaksana Setda Provinsi DKI Jakarta","Kepala BPBD Provinsi DKI Jakarta","Wakil Kepala DPMPTSP Provinsi DKI Jakarta"]}
+    ],
+    links:[]
+  },
+  {
+    id:"sejarah", tag:"Profil", title:"Sejarah administrasi kependudukan dan pencatatan sipil Jakarta", date:"Sejarah kelembagaan",
+    summary:"Jejak pencatatan sipil Jakarta dapat ditelusuri sejak era Batavia hingga pembentukan layanan yang terbuka bagi seluruh penduduk.",
+    body:["Dokumen pencatatan sipil di Batavia telah ditemukan bertahun 1829. Pada masa kolonial, Burgerlijke Stand berjalan dengan aturan dan penggolongan penduduk yang berbeda.","Pada masa pendudukan Jepang, Burgerlijke Stand berganti sebutan menjadi Kantor Pencacah Jiwa. Setelah kemerdekaan, kegiatan pencatatan sipil dilanjutkan pemerintah Republik Indonesia.","Dalam perkembangan pascakemerdekaan, istilah Catatan Sipil digunakan dan layanan kelembagaan Jakarta terus berubah. Instruksi Presidium Kabinet Ampera No. 31/In/U/12/66 kemudian menjadi tonggak pembukaan pelayanan catatan sipil bagi seluruh WNI maupun WNA."],
+    groups:[
+      {title:"Linimasa ringkas",items:["1829 — bukti dokumen akta pencatatan sipil di Batavia","1850 — ordonansi pencatatan sipil pertama untuk Hindia Belanda","1942–1945 — Kantor Pencacah Jiwa pada masa pendudukan Jepang","1945 — penyelenggaraan dilanjutkan Pemerintah Republik Indonesia","1950-an — penggunaan istilah Kantor Catatan Sipil berkembang","1966 — pelayanan dinyatakan terbuka untuk seluruh penduduk WNI dan WNA"]}
+    ],
+    links:[]
+  },
+  {
+    id:"dariku", tag:"Data", title:"DARIKU UNTUKMU × PRODUK RW", date:"Ekosistem data kependudukan",
+    summary:"Rangkaian dashboard profil kependudukan, profil RW/RT, LAMPID, dan tema mobilitas serta peristiwa vital.",
+    body:["DARIKU UNTUKMU × PRODUK RW adalah ekosistem akses data dan profil kependudukan yang memisahkan informasi agregat publik dari data identitas individu.","Pada sumber resmi tersedia dashboard profil WNI, dashboard profil WNA, profil kependudukan tingkat RW/RT (PRODUK RW), LAMPID-KACER, serta dashboard tematik kelahiran, kematian, pindah, dan datang."],
+    groups:[
+      {title:"Dashboard dan produk data",items:["Dashboard Profil Kependudukan WNI","Dashboard Profil Kependudukan WNA","PRODUK RW — profil kependudukan tingkat RW dan RT","LAMPID-KACER","Tematik Kelahiran","Tematik Kematian","Tematik Pindah","Tematik Datang","Pendatang Pasca Lebaran","Pindah Luar DKI Pasca Lebaran","Buku Profil Kependudukan"]}
+    ],
+    links:[]
+  },
+  {
+    id:"pendatang-lebaran", tag:"Data", title:"Pendatang Pasca Lebaran", date:"Mobilitas penduduk",
+    summary:"Produk informasi tematik untuk membaca dinamika pendatang dan perpindahan penduduk setelah periode Lebaran.",
+    body:["Pendatang Pasca Lebaran ditempatkan bersama ekosistem dashboard kependudukan Dukcapil dan menjadi salah satu tema mobilitas penduduk.","Pada redesign, kategori ini disatukan dengan pusat data agar pengguna memahami konteksnya tanpa harus membuka situs lama."],
+    links:[]
+  },
+  {
+    id:"loket-virtual", tag:"Layanan", title:"Loket Virtual", date:"Kanal layanan wilayah",
+    summary:"Kanal pelayanan virtual yang pada situs lama disediakan melalui unit wilayah tertentu.",
+    body:["Loket Virtual merupakan salah satu kanal tambahan yang pernah/masih ditampilkan pada struktur layanan Dukcapil, termasuk untuk Suku Dinas Dukcapil Jakarta Barat dan Jakarta Timur.","Karena implementasinya bergantung pada kanal unit wilayah, warga sebaiknya memilih wilayah pada direktori lokasi untuk memperoleh kanal yang aktif dan sesuai."],
+    links:[]
+  },
+  {
+    id:"penghargaan", tag:"Profil", title:"Penghargaan Dukcapil", date:"Rekam pengakuan",
+    summary:"Kategori dokumentasi penghargaan dan pengakuan yang diterima organisasi.",
+    body:["Situs lama menyediakan kategori Penghargaan sebagai bagian dari informasi organisasi. Pada redesign, kategorinya dipertahankan agar dokumentasi capaian dapat dikelola di satu tempat.","Daftar item penghargaan perlu dipublikasikan hanya setelah metadata—nama penghargaan, pemberi, tahun, dan bukti—tersedia secara terverifikasi."],
+    links:[]
+  },
+  {
+    id:"rekrutmen-hukum-2026", tag:"Arsip Pengumuman", title:"Rekrutmen Tenaga Ahli Hukum T.A. 2026", date:"Arsip 2026",
+    summary:"Arsip seleksi penyedia jasa konsultasi berorientasi bidang kependudukan (Tenaga Ahli Hukum) Tahun Anggaran 2026.",
+    body:["Pengumuman ini dibuka untuk memenuhi kebutuhan Penyedia Jasa Konsultasi Berorientasi Bidang Kependudukan (Tenaga Ahli Hukum) pada Dinas Dukcapil DKI Jakarta Tahun Anggaran 2026.","Sumber resmi telah memuat tahapan pengumuman awal, perpanjangan, hasil seleksi administrasi, hingga hasil seleksi akhir. Karena tahap akhir telah dipublikasikan, konten ini ditempatkan sebagai arsip, bukan lowongan aktif."],
+    groups:[{title:"Dokumen tahapan",items:["Pengumuman rekrutmen awal","Pengumuman perpanjangan rekrutmen","Hasil seleksi administrasi","Hasil seleksi akhir"]}],
+    links:[]
+  },
+  {
     id:"berita-prioritas", tag:"Berita Utama", title:"Dukcapil DKI Perkuat Layanan Inklusif melalui Dashboard Profil Penduduk Disabilitas", date:"28 Agustus 2026",
     summary:"Dashboard PRIORITAS menyediakan data agregat profil penduduk penyandang disabilitas yang teregistrasi secara administratif.",
     body:["Dashboard PRIORITAS dikembangkan untuk menyajikan informasi agregat mengenai jumlah dan persebaran penduduk penyandang disabilitas yang teregistrasi secara administratif di DKI Jakarta.","Penyajian data agregat membantu perencanaan pelayanan yang lebih inklusif tanpa mengekspos data identitas individu."],
