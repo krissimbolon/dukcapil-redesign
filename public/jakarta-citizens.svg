@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Warga Jakarta dan lanskap kota</title>
+  <desc id="desc">Ilustrasi orisinal warga dari beragam usia di depan siluet Monas dan gedung Jakarta.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dff3ff"/><stop offset="1" stop-color="#fff2ba"/></linearGradient>
+    <linearGradient id="coat" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#17679a"/><stop offset="1" stop-color="#0d3e68"/></linearGradient>
+  </defs>
+  <rect width="1200" height="720" rx="48" fill="url(#sky)"/>
+  <circle cx="980" cy="116" r="64" fill="#f4bf2a" opacity=".85"/>
+  <g fill="#2d6586" opacity=".16">
+    <path d="M0 500V330h120v170zm145 0V250h150v250zm175 0V360h130v140zm590 0V280h140v220zm165 0V350h125v150z"/>
+    <path d="M510 500V265h62v-90h18V88h20v87h18v90h62v235z"/>
+  </g>
+  <path d="M0 530c220-56 387-18 576 12 190 30 366 26 624-38v216H0z" fill="#c8e8d8"/>
+  <g stroke="#173b5e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(238 270)"><circle cx="96" cy="73" r="55" fill="#b66e44"/><path d="M43 68c7-74 103-90 122-14 5 21-2 39-2 39-18-17-35-25-55-27-17 20-41 31-65 32z" fill="#122f4c"/><path d="M15 322c5-108 37-168 82-168s80 60 86 168" fill="#f2aa30"/><path d="M62 89c12 15 49 15 66 0" fill="none"/><circle cx="72" cy="75" r="3"/><circle cx="121" cy="75" r="3"/></g>
+    <g transform="translate(470 205)"><circle cx="105" cy="78" r="61" fill="#d59870"/><path d="M46 76C45 2 168-2 169 83c-20-31-62-43-110-20z" fill="#173b5e"/><path d="M0 390c9-139 46-218 108-218 63 0 103 79 111 218" fill="url(#coat)"/><path d="M75 97c16 15 49 15 66-1" fill="none"/><circle cx="77" cy="78" r="3"/><circle cx="132" cy="78" r="3"/><path d="M65 182l42 55 44-55" fill="#fff"/></g>
+    <g transform="translate(745 282)"><circle cx="88" cy="65" r="52" fill="#9f5e3b"/><path d="M39 68c-5-74 103-75 104-7-27-20-71-22-104 7z" fill="#172f47"/><path d="M7 310c7-105 35-157 83-157s78 52 84 157" fill="#2f9177"/><path d="M55 84c15 13 44 13 59 0" fill="none"/><circle cx="62" cy="66" r="3"/><circle cx="107" cy="66" r="3"/></g>
+  </g>
+  <g fill="#fff"><circle cx="95" cy="120" r="10" opacity=".7"/><circle cx="145" cy="82" r="5" opacity=".8"/><circle cx="1080" cy="235" r="8" opacity=".65"/></g>
+</svg>
